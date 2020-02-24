@@ -6,7 +6,11 @@
         <section class="content-header">
           <h1>
             Set Fee For Individual Student 
-            <small>Search By Using Registration ID</small>
+            @if (!isset($status))
+              
+              <small>Search By Using Registration ID</small>
+                
+            @endif
           </h1>
           @if (Session::has('data_not'))
                     <div class="row">
@@ -26,23 +30,28 @@
             <div class="col-xs-12">
               <div class="box">
                 <div class="box-header">
-                     
-                    <div style="height: 73px;" class="well">
+                   @if (!isset($status))
+                        
+                    <div style="height: auto" class="well">
                         <form action="{{route('set_individual')}}" method="POST">
                         {{ csrf_field() }}
                             <div class="row">
-                                    <div class="col-md-4">
-                                      <div class="form-group">
-                                        <input type="text" value="<?php if(isset($_POST['search'])){echo $_POST['search'];} ?>"  name="search" placeholder="Enter Reg-ID" class="form-control">
-                                      </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                            <input type="submit"  name="submit" value="Find Out" class="btn btn-primary">
-                                    </div>
-                                    
-                                    </div>
+                                <div class="col-md-4">
+                                  <div class="form-group">
+                                    <label for="">Enter Admission Number</label>
+                                    <input type="text" value="<?php if(isset($_POST['search'])){echo $_POST['search'];} ?>"  name="search" placeholder="Enter Reg-ID" class="form-control">
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                  <input type="submit"  name="submit" value="Find Out" class="btn btn-primary">
+                                </div>
+                            </div>
                         </form>
                     </div>
+                   @endif 
+
                 </div>
 
               
@@ -50,10 +59,10 @@
                 <!-- /.box-header -->
                     <div style="margin-top: -25px;" class="box-body">
                     @if (!empty($fee))
-                      <div style="margin-top: inherit;text-align:center;">
+                      {{-- <div style="margin-top: inherit;text-align:center;">
                         <h3>Registration ID# <span>{{$fee[0]->std_reg_id}}</span></h3>
                         <h3>Class Name: <span>{{$fee[0]->std_class}}</span></h3>
-                      </div><hr>
+                      </div><hr> --}}
                         <div class="table-responsive">
                            
                             

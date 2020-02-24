@@ -10,6 +10,7 @@ use App\Model\CreateSession;
 use App\Model\StudentFee;
 use App\Model\DefineFee;
 use App\Model\StudentClassHistory;
+use Illuminate\Support\Facades\DB;
 
 class NewRegController extends Controller
 {
@@ -35,7 +36,23 @@ class NewRegController extends Controller
     public function create()
     {   
         $session = CreateSession::get();
-        return view('dashboard-pages/new-reg')->with('data',$session);
+        $last_id = DB::table('new_registers')->latest('id')->first();
+        if(empty($last_id)){
+            $last_id = 0; 
+            return view('dashboard-pages/new-reg')->with([
+                'data'=>$session,
+                'new_reg_id'=>$last_id
+            ]);
+        }else{
+            return view('dashboard-pages/new-reg')->with([
+                'data'=>$session,
+                'new_id'=>$last_id
+            ]);
+
+        }
+       
+        // $new_id = $last_id;
+        // dd($last_id->std_reg_id);
     }
 
     /**
@@ -46,9 +63,10 @@ class NewRegController extends Controller
      */
     public function store(Request $request)
     {   
+        $reg_id = $request->input('std_regid');
         $now = Carbon::now();
         $post = new NewRegister();
-        $post->std_reg_id = $request->input('std_regid');
+        $post->std_reg_id = $reg_id;
         $post->std_name = $request->input('std_name');
         $post->std_father_name = $request->input('std_fname');
         $post->std_religion = $request->input('std_religion');
@@ -96,11 +114,17 @@ class NewRegController extends Controller
         $class->current_year = $now->year;
         $class->save();
 
+        
+
         if($post->save()){
             Session::flash('register_ok', 'New Registration has been Created!');
         }
-
-
+        // $current_status = "true";
+        // $user = DB::table('student_fees')->where('std_reg_id',$reg_id)->get();
+        // return view('dashboard-pages/set_individual_fee')->with([
+        //     'fee'=>$user,
+        //     'status'=>$current_status
+        // ]);
         return redirect()->route('new-register.create');
     }
 

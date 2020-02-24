@@ -55,10 +55,20 @@ Route::prefix('home')->group(function () {
     Route::get('show/fee-history','SearchController@show_history')->name('get_history');
     Route::post('show/fee-history','SearchController@get_history')->name('get_history');
     
-});
+    Route::get('submit/fee','FeeSubmissionController@show_form')->name('submit_fee');
+    Route::post('submit/fee','FeeSubmissionController@show_fee')->name('submit_fee');
+    
+    Route::get('fee-submit','FeeSubmissionController@submit_fee')->name('submit');
 
-    Route::get('/home/show-sections/{class}','StudentRegController@search_section');
-    Route::post('/home/show-sections/{class}','StudentRegController@search_section');
+    
+    Route::get('/show-sections/{class}','StudentRegController@search_section');
+    Route::post('/show-sections/{class}','StudentRegController@search_section');
+    
+    Route::get('/show-total-fee/{class}','StudentRegController@search_total_fee');
+    Route::post('/show-total-fee/{class}','StudentRegController@search_total_fee');
+    
+});
+ 
 
 Route::get('/admin', function(){
     return view('dashboard');

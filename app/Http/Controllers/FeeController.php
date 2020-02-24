@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\DefineFee;
 use App\Model\StudentFee;
+use App\Model\TotalFeeClasswise;
 use Session;
 use Carbon\Carbon;
 
@@ -39,22 +40,38 @@ class FeeController extends Controller
      */
     public function store(Request $request)
     {
-        $fee = ['Admission Fee','Tution Fee','Exam Fee Annual','Hostel Fee','Special Facility Fee','Promotion Charges','Security(Refundable)','Van Fee(3918)','Van Fee(ND 495)','Van Fee(JGA 5535)','Board Registration','Medical Charges','Board Examination Fee'];
+        $class = $request->input('class_name');
+        $data = DefineFee::where('class_name',$class)->count();
+        
+        if($data){
+            $delete_id = DefineFee::where('class_name', $class)->delete();
+        }
+
+        $total_fee_calculated = 0;
+
+        $fee = ['Admission Fee','Tution Fee','Exam Fee Annual','Hostel Fee','Special Facility Fee','Promotion Charges','Security(Refundable)','Prospectus Fee','Transport Fee','Board Registration','Medical Charges','Board Examination Fee'];
         for ($i=0; $i < sizeof($fee); $i++) { 
             $post = new DefineFee();
-            $fee_type = 
+            
             $post->class_name = $request->input('class_name');
             $post->fee_type = $fee[$i];
             $post->fee_amount = $request->input('fee_amount_'.$i);
             $post->fee_month = $request->input('fee_month');
             $post->fee_year = $request->input('fee_year');
-    
+            
+            $total_fee_calculated += $request->input('fee_amount_'.$i);
+
             $post->save();
             # code...
         }
 
-        Session::flash('define_fee', 'Fee has been Defined!'); 
+        $total = new TotalFeeClasswise();
+        $total->class_name = $class;
+        $total->fee_month = $request->input('fee_month');
+        $total->total_fee_amount = $total_fee_calculated;
+        $total->save();
 
+        Session::flash('define_fee', 'Fee has been Defined!'); 
         return redirect('home/fee/create');
     }
 
@@ -93,7 +110,7 @@ class FeeController extends Controller
         $month = $now->month;
         $year = $now->year;
         $data = StudentFee::where('std_reg_id',$std_reg_id)->get();
-        $fee = ['Admission Fee','Tution Fee','Exam Fee Annual','Hostel Fee','Special Facility Fee','Promotion Charges','Security(Refundable)','Van Fee(3918)','Van Fee(ND 495)','Van Fee(JGA 5535)','Board Registration','Medical Charges','Board Examination Fee'];
+        $fee = ['Admission Fee','Tution Fee','Exam Fee Annual','Hostel Fee','Special Facility Fee','Promotion Charges','Security(Refundable)','Transport Fee','Board Registration','Medical Charges','Board Examination Fee'];
         for ($i=0; $i < sizeof($fee); $i++) { 
             $post = StudentFee::find($data[$i]->id);
             $post->std_reg_id = $data[$i]->std_reg_id;

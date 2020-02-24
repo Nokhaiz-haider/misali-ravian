@@ -61,6 +61,7 @@
                 </span>
               </a>
               <ul class="treeview-menu">
+                <li class="{{ request()->is('home/fee/create') ? 'active' : '' }}"><a href="{{route('submit_fee')}}"><i class="fa fa-circle-o"></i> Submit Fee</a></li>
                   <li class="{{ request()->is('home/fee/create') ? 'active' : '' }}"><a href="{{route('fee.create')}}"><i class="fa fa-circle-o"></i> Define Overall Fee</a></li>
                   <li class="{{ setActive('home/set/individual-fee', 'active') }}"><a href="{{route('set_individual')}}"><i class="fa fa-circle-o"></i> Update Individual's Fee</a></li>
                   <li class="{{ setActive('home/fee/history/create', 'active') }}"><a style="font-size:13px;" href="{{route('history.create')}}"><i class="fa fa-circle-o"></i> Create Student Fee History</a></li>

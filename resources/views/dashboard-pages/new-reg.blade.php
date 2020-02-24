@@ -34,7 +34,7 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label>Registration ID</label>
-                                <input type="text" required name="std_regid" placeholder="Student's Registration ID" class="form-control">
+                              <input type="text" required name="std_regid" value="@php if(isset($new_reg_id)){echo ++$new_reg_id; } else {echo ++$new_id->std_reg_id;} @endphp" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-4">

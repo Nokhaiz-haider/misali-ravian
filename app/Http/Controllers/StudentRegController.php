@@ -18,4 +18,11 @@ class StudentRegController extends Controller
         return $user;
 
     }
+
+    public function search_total_fee($class){
+
+        $user = DB::table('total_fee_classwises')->where('class_name', $class)->get();
+        return $user;
+
+    }
 }

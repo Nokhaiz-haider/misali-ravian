@@ -57,7 +57,7 @@ class DefineController extends Controller
     }
 
     public function define_fee(Request $request){
-        $fee = ['Admission Fee','Tution Fee','Exam Fee Annual','Hostel Fee','Special Facility Fee','Promotion Charges','Security(Refundable)','Van Fee(3918)','Van Fee(ND 495)','Van Fee(JGA 5535)','Board Registration','Medical Charges','Board Examination Fee'];
+        $fee = ['Admission Fee','Tution Fee','Exam Fee Annual','Hostel Fee','Special Facility Fee','Promotion Charges','Security(Refundable)','Transport Fee','Board Registration','Medical Charges','Board Examination Fee'];
         for ($i=0; $i < sizeof($fee); $i++) { 
             $post = new DefineFee();
             $fee_type = 
